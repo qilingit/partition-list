@@ -6,16 +6,16 @@ import java.util.List;
 public class PartitionImpl implements PartitionService
 {
 	@Override
-	public <T> List<List<T>> partition(List<T> list, Integer dim) throws PartitionException
+	public <T> List<List<T>> partition(List<T> list, Integer dim) throws PartitionDimNegativeException, PartitionDimNullException
 	{
 		if(dim == null)
 		{
-			throw new PartitionException("Dimension can not be null");
+			throw new PartitionDimNullException();
 		}
 
 		if(dim < 0)
 		{
-			throw new PartitionException("Dimension can not be negative");
+			throw new PartitionDimNegativeException();
 		}
 
 		if(dim == 0 || list == null || list.size() == 0)
