@@ -23,15 +23,15 @@ public class AdneomFunctionTest
 
 	// dim null
 	@Test
-	public void testPartition_dimNull() throws PartitionDimNullException
+	public void testPartition_dimNull()
 	{
 		try
 		{
 			partitionImpl.partition(list, null);
 		}
-		catch (PartitionDimNullException | PartitionDimNegativeException e)
+		catch (PartitionException e)
 		{
-			assert(e.getMessage().equals("Dimension can not be null"));
+			assert(e.getMessage().contains("Dimension can not be null"));
 		}
 	}
 
@@ -43,43 +43,42 @@ public class AdneomFunctionTest
 		{
 			partitionImpl.partition(list, -1);
 		}
-		catch (PartitionDimNullException | PartitionDimNegativeException e)
+		catch (PartitionException e)
 		{
-			assert(e.getMessage().equals("Dimension can not be negative"));
+			assert(e.getMessage().contains("Dimension can not be negative"));
 		}
-
 	}
 
 	// List null
 	@Test
-	public void testPartition_ListNull() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_ListNull() throws PartitionException
 	{
 		List<List<Integer>> listPartitionNull = partitionImpl.partition(null, 2);
 		assertEquals(listPartitionNull, new ArrayList<List<Integer>>());
-		System.out.println("Entree: " + listNull + ", dim: 2, \nSortie: " + listPartitionNull + "\n");
+		System.out.println("Input: " + listNull + ", dim: 2, \nOutput: " + listPartitionNull + "\n");
 	}
 
 	// List empty
 	@Test
-	public void testPartition_ListEmpty() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_ListEmpty() throws PartitionException
 	{
 		List<List<Integer>> listPartitionEmpty = partitionImpl.partition(new ArrayList<Integer>(), 2);
 		assertEquals(listPartitionEmpty, new ArrayList<List<Integer>>());
-		System.out.println("Entree: " + listPartitionEmpty + ", dim: 0, \nSortie: " + listPartitionEmpty + "\n");
+		System.out.println("Input: " + listPartitionEmpty + ", dim: 2, \nOutput: " + listPartitionEmpty + "\n");
 	}
 
 	// dim 0
 	@Test
-	public void testPartition_Dim0() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_Dim0() throws PartitionException
 	{
 		List<List<Integer>> listPartition0 = partitionImpl.partition(list, 0);
 		assertEquals(listPartition0, new ArrayList<List<Integer>>());
-		System.out.println("Entree: " + list + ", dim: 0, \nSortie: " + listPartition0 + "\n");
+		System.out.println("Input: " + list + ", dim: 0, \nOutput: " + listPartition0 + "\n");
 	}
 
 	// dim 1
 	@Test
-	public void testPartition_Dim1() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_Dim1() throws PartitionException
 	{
 		List<List<Integer>> listPartition1 = partitionImpl.partition(list, 1);
 		List<List<Integer>> listPartitionExpected1 = new ArrayList<List<Integer>>(6);
@@ -91,13 +90,13 @@ public class AdneomFunctionTest
 		{
 			listPartitionExpected1.get(j).add(j+1);
 		}
-		System.out.println("Entree: " + list + ", dim: 6, \nSortie: " + listPartitionExpected1 + "\n");
+		System.out.println("Input: " + list + ", dim: 1, \nOutput: " + listPartitionExpected1 + "\n");
 		assertEquals(listPartition1,listPartitionExpected1);
 	}
 
 	// test number of element non changed
 	@Test
-	public void testPartition_ElementNoChange() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_ElementNoChange() throws PartitionException
 	{
 		List<List<Integer>> listPartition1 = partitionImpl.partition(list, 1);
 		List<List<Integer>> listPartitionExpected1 = new ArrayList<List<Integer>>(6);
@@ -109,13 +108,14 @@ public class AdneomFunctionTest
 		{
 			listPartitionExpected1.get(j).add(j+1);
 		}
-		System.out.println("Entree: " + list + ", dim: 6, \nSortie: " + listPartitionExpected1 + "\n");
-		assertEquals(6, PartitionImpl.countElementListChain(listPartitionExpected1));
+		System.out.println("Input: " + list + ", number of element : " + list.size() + ", dim: 1, \nOutput: "
+				+ listPartitionExpected1 + ", number of element : " + PartitionImpl.countElementListChain(listPartitionExpected1) + "\n");
+		assertEquals(list.size(), PartitionImpl.countElementListChain(listPartitionExpected1));
 	}
 
-	// Dim 2, exact divised
+	// Dim 2, exact devised
 	@Test
-	public void testPartition_DimExactDivisionNoOne() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_DimExactDivisionNoOne() throws PartitionException
 	{
 		List<List<Integer>> listPartition2 = partitionImpl.partition(list, 2);
 		List<List<Integer>> listPartitionExpected2 = new ArrayList<List<Integer>>(3);
@@ -132,12 +132,12 @@ public class AdneomFunctionTest
 		listPartitionExpected2.get(2).add(6);
 
 		assertEquals(listPartition2,listPartitionExpected2);
-		System.out.println("Entree: " + list + ", dim: 2, \nSortie: " + listPartitionExpected2 + "\n");
+		System.out.println("Input: " + list + ", dim: 2, \nOutput: " + listPartitionExpected2 + "\n");
 	}
 
 	// dim is not exact devised
 	@Test
-	public void testPartition_NoExactDivision() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_NoExactDivision() throws PartitionException
 	{
 		// dim 4
 		List<List<Integer>> listPartition4 = partitionImpl.partition(list, 4);
@@ -155,12 +155,12 @@ public class AdneomFunctionTest
 		listPartitionExpected4.get(1).add(6);
 
 		assertEquals(listPartition4,listPartitionExpected4);
-		System.out.println("Entree: " + list + ", dim: 4, \nSortie: " + listPartitionExpected4 + "\n");
+		System.out.println("Input: " + list + ", dim: 4, \nOutput: " + listPartitionExpected4 + "\n");
 	}
 
 	// dim is the number of element
 	@Test
-	public void testPartition_DimEqualsToElement() throws PartitionDimNegativeException, PartitionDimNullException
+	public void testPartition_DimEqualsToElement() throws PartitionException
 	{
 		List<List<Integer>> listPartition6 = partitionImpl.partition(list, 6);
 		List<List<Integer>> listPartitionExpected6 = new ArrayList<List<Integer>>(1);
@@ -168,12 +168,13 @@ public class AdneomFunctionTest
 		listPartitionExpected6.add(list);
 
 		assertEquals(listPartition6,listPartitionExpected6);
-		System.out.println("Entree: " + list + ", dim: 6, \nSortie: " + listPartitionExpected6 + "\n");
+		System.out.println("Input: " + list + ", dim: 6, \nOutput: " + listPartitionExpected6 + "\n");
 	}
 
 	// dim bigger than number of element
 	@Test
-	public void testPartition_DimBiggerThanElement() throws PartitionDimNegativeException, PartitionDimNullException {
+	public void testPartition_DimBiggerThanElement() throws PartitionException
+    {
 		// dim 7
 		List<List<Integer>> listPartition7 = partitionImpl.partition(list, 7);
 		List<List<Integer>> listPartitionExpected7 = new ArrayList<List<Integer>>(1);
@@ -181,6 +182,6 @@ public class AdneomFunctionTest
 		listPartitionExpected7.add(list);
 
 		assertEquals(listPartition7,listPartitionExpected7);
-		System.out.println("Entree: " + list + ", dim: 7, \nSortie: " + listPartitionExpected7 + "\n");
+		System.out.println("Input: " + list + ", dim: 7, \nOutput: " + listPartitionExpected7 + "\n");
 	}
 }
