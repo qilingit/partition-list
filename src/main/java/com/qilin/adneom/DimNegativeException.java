@@ -2,7 +2,8 @@ package com.qilin.adneom;
 
 public class DimNegativeException extends PartitionException
 {
-    public DimNegativeException() {
+    public DimNegativeException()
+    {
         super("Dimension can not be negative");
     }
 }
